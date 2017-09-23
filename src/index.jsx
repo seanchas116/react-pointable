@@ -8,14 +8,20 @@ import PropTypes from 'prop-types';
 
 // A mapping of pointer event props to event names.
 const pointerEventMap = {
-	onPointerMove:   'pointermove',
-	onPointerDown:   'pointerdown',
-	onPointerUp:     'pointerup',
-	onPointerOver:   'pointerover',
-	onPointerOut:    'pointerout',
-	onPointerEnter:  'pointerenter',
-	onPointerLeave:  'pointerleave',
-	onPointerCancel: 'pointercancel'
+	onPointerMove:          'pointermove',
+	onPointerDown:          'pointerdown',
+	onPointerUp:            'pointerup',
+	onPointerOver:          'pointerover',
+	onPointerOut:           'pointerout',
+	onPointerEnter:         'pointerenter',
+	onPointerLeave:         'pointerleave',
+	onPointerCancel:        'pointercancel',
+	onPointerMoveCapture:   'pointermove',
+	onPointerDownCapture:   'pointerdown',
+	onPointerUpCapture:     'pointerup',
+	onPointerOverCapture:   'pointerover',
+	onPointerOutCapture:    'pointerout',
+	onPointerCancelCapture: 'pointercancel'
 };
 
 // An array of just the pointer event props.
@@ -83,7 +89,13 @@ Pointable.propTypes = {
 	onPointerOut: PropTypes.func,
 	onPointerEnter: PropTypes.func,
 	onPointerLeave: PropTypes.func,
-	onPointerCancel: PropTypes.func
+	onPointerCancel: PropTypes.func,
+	onPointerMoveCapture: PropTypes.func,
+	onPointerDownCapture: PropTypes.func,
+	onPointerUpCapture: PropTypes.func,
+	onPointerOverCapture: PropTypes.func,
+	onPointerOutCapture: PropTypes.func,
+	onPointerCancelCapture: PropTypes.func
 };
 
 Pointable.defaultProps = {
@@ -107,7 +119,7 @@ const initNodeWithPE = (node, props) => {
 		const listener = props[eventProp];
 		if (listener) {
 			hasPE = true;
-			node.addEventListener(pointerEventMap[eventProp], listener);
+			node.addEventListener(pointerEventMap[eventProp], listener, eventProp.endsWith('Capture'));
 		}
 	});
 
@@ -143,7 +155,7 @@ const updateNodeWithPE = (node, prevProps, nextProps) => {
 
 		// Add/update with new event listener.
 		if (listenerNew) {
-			node.addEventListener(pointerEventMap[eventProp], listenerNew);
+			node.addEventListener(pointerEventMap[eventProp], listenerNew, eventProp.endsWith('Capture'));
 		}
 	});
 
