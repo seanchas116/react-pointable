@@ -66,7 +66,7 @@ describe("component", () => {
 			"props": {},
 			"children": null
 		});
-		expect(addEventListener).toHaveBeenCalledWith("pointermove", onPointerMove);
+		expect(addEventListener).toHaveBeenCalledWith("pointermove", onPointerMove, false);
 		expect(setAttribute).toHaveBeenCalledWith('touch-action', 'auto');
 	});
 
@@ -104,7 +104,29 @@ describe("component", () => {
 				<Pointable {...pointableProps}></Pointable>,
 				rendererOptions
 			);
-			expect(addEventListener).toHaveBeenCalledWith(domEventName, handler);
+			expect(addEventListener).toHaveBeenCalledWith(domEventName, handler, false);
+		});
+	});
+
+	[
+		'onPointerMoveCapture',
+		'onPointerDownCapture',
+		'onPointerUpCapture',
+		'onPointerOverCapture',
+		'onPointerOutCapture',
+		'onPointerCancelCapture'
+	].forEach((evtName) => {
+		it(`adds capture phase event listener for ${evtName}`, () => {
+			const domEventName = evtName.slice(2, -7).toLowerCase();
+			const handler = () => {};
+			const pointableProps = {
+				[evtName]: handler
+			};
+			const component = renderer.create(
+				<Pointable {...pointableProps}></Pointable>,
+				rendererOptions
+			);
+			expect(addEventListener).toHaveBeenCalledWith(domEventName, handler, true);
 		});
 	});
 });

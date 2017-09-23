@@ -41,8 +41,8 @@ test('initNodeWithPE', () => {
 	initNodeWithPE(mockNode, props2);
 
 	expect(mockNode.addEventListener).toHaveBeenCalledTimes(2);
-	expect(mockNode.addEventListener.mock.calls[0]).toEqual(['pointerenter', props2.onPointerEnter]);
-	expect(mockNode.addEventListener.mock.calls[1]).toEqual(['pointerleave', props2.onPointerLeave]);
+	expect(mockNode.addEventListener.mock.calls[0]).toEqual(['pointerenter', props2.onPointerEnter, false]);
+	expect(mockNode.addEventListener.mock.calls[1]).toEqual(['pointerleave', props2.onPointerLeave, false]);
 
 	expect(mockNode.setAttribute).toHaveBeenCalledTimes(1);
 	expect(mockNode.setAttribute).toHaveBeenCalledWith('touch-action', 'auto');
@@ -80,8 +80,8 @@ test('updateNodeWithPE', () => {
 	updateNodeWithPE(mockNode, prevProps1, nextProps1);
 
 	expect(mockNode.addEventListener).toHaveBeenCalledTimes(2);
-	expect(mockNode.addEventListener.mock.calls[0]).toEqual(['pointerenter', nextProps1.onPointerEnter]);
-	expect(mockNode.addEventListener.mock.calls[1]).toEqual(['pointerleave', nextProps1.onPointerLeave]);
+	expect(mockNode.addEventListener.mock.calls[0]).toEqual(['pointerenter', nextProps1.onPointerEnter, false]);
+	expect(mockNode.addEventListener.mock.calls[1]).toEqual(['pointerleave', nextProps1.onPointerLeave, false]);
 
 	expect(mockNode.removeEventListener).not.toHaveBeenCalled();
 
@@ -112,8 +112,8 @@ test('updateNodeWithPE', () => {
 	expect(mockNode.addEventListener).not.toHaveBeenCalled();
 
 	expect(mockNode.removeEventListener).toHaveBeenCalledTimes(2);
-	expect(mockNode.removeEventListener.mock.calls[0]).toEqual(['pointerenter', prevProps2.onPointerEnter]);
-	expect(mockNode.removeEventListener.mock.calls[1]).toEqual(['pointerleave', prevProps2.onPointerLeave]);
+	expect(mockNode.removeEventListener.mock.calls[0]).toEqual(['pointerenter', prevProps2.onPointerEnter, false]);
+	expect(mockNode.removeEventListener.mock.calls[1]).toEqual(['pointerleave', prevProps2.onPointerLeave, false]);
 
 	expect(mockNode.setAttribute).not.toHaveBeenCalled();
 
@@ -163,11 +163,11 @@ test('updateNodeWithPE', () => {
 	updateNodeWithPE(mockNode, prevProps4, nextProps4);
 
 	expect(mockNode.addEventListener).toHaveBeenCalledTimes(1);
-	expect(mockNode.addEventListener).toHaveBeenCalledWith('pointermove', nextProps4.onPointerMove);
+	expect(mockNode.addEventListener).toHaveBeenCalledWith('pointermove', nextProps4.onPointerMove, false);
 
 	expect(mockNode.removeEventListener).toHaveBeenCalledTimes(2);
-	expect(mockNode.removeEventListener.mock.calls[0]).toEqual(['pointerenter', prevProps4.onPointerEnter]);
-	expect(mockNode.removeEventListener.mock.calls[1]).toEqual(['pointerleave', prevProps4.onPointerLeave]);
+	expect(mockNode.removeEventListener.mock.calls[0]).toEqual(['pointerenter', prevProps4.onPointerEnter, false]);
+	expect(mockNode.removeEventListener.mock.calls[1]).toEqual(['pointerleave', prevProps4.onPointerLeave, false]);
 
 	expect(mockNode.setAttribute).toHaveBeenCalledTimes(1);
 	expect(mockNode.setAttribute).toHaveBeenCalledWith('touch-action', 'none');
