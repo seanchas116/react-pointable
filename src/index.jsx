@@ -8,20 +8,20 @@ import PropTypes from 'prop-types';
 
 // A mapping of pointer event props to event names.
 const pointerEventMap = {
-	onPointerMove:          'pointermove',
-	onPointerDown:          'pointerdown',
-	onPointerUp:            'pointerup',
-	onPointerOver:          'pointerover',
-	onPointerOut:           'pointerout',
-	onPointerEnter:         'pointerenter',
-	onPointerLeave:         'pointerleave',
-	onPointerCancel:        'pointercancel',
-	onPointerMoveCapture:   'pointermove',
-	onPointerDownCapture:   'pointerdown',
-	onPointerUpCapture:     'pointerup',
-	onPointerOverCapture:   'pointerover',
-	onPointerOutCapture:    'pointerout',
-	onPointerCancelCapture: 'pointercancel'
+	onPointerMove:          {type: 'pointermove', capture: false},
+	onPointerDown:          {type: 'pointerdown', capture: false},
+	onPointerUp:            {type: 'pointerup', capture: false},
+	onPointerOver:          {type: 'pointerover', capture: false},
+	onPointerOut:           {type: 'pointerout', capture: false},
+	onPointerEnter:         {type: 'pointerenter', capture: false},
+	onPointerLeave:         {type: 'pointerleave', capture: false},
+	onPointerCancel:        {type: 'pointercancel', capture: false},
+	onPointerMoveCapture:   {type: 'pointermove', capture: true},
+	onPointerDownCapture:   {type: 'pointerdown', capture: true},
+	onPointerUpCapture:     {type: 'pointerup', capture: true},
+	onPointerOverCapture:   {type: 'pointerover', capture: true},
+	onPointerOutCapture:    {type: 'pointerout', capture: true},
+	onPointerCancelCapture: {type: 'pointercancel', capture: true}
 };
 
 // An array of just the pointer event props.
@@ -119,7 +119,7 @@ const initNodeWithPE = (node, props) => {
 		const listener = props[eventProp];
 		if (listener) {
 			hasPE = true;
-			node.addEventListener(pointerEventMap[eventProp], listener, {capture: eventProp.endsWith('Capture')});
+			node.addEventListener(pointerEventMap[eventProp].type, listener, {capture: pointerEventMap[eventProp].capture});
 		}
 	});
 
@@ -148,16 +148,14 @@ const updateNodeWithPE = (node, prevProps, nextProps) => {
 		// Note the additional check exists because `undefined` !== `null` but both mean "no event listener".
 		if (listenerOld === listenerNew || !listenerOld && !listenerNew) return;
 
-		const capture = eventProp.endsWith('Capture')
-
 		// Remove existing event listener.
 		if (listenerOld) {
-			node.removeEventListener(pointerEventMap[eventProp], listenerOld, {capture});
+			node.removeEventListener(pointerEventMap[eventProp].type, listenerOld, {capture: pointerEventMap[eventProp].capture});
 		}
 
 		// Add/update with new event listener.
 		if (listenerNew) {
-			node.addEventListener(pointerEventMap[eventProp], listenerNew, {capture});
+			node.addEventListener(pointerEventMap[eventProp].type, listenerNew, {capture: pointerEventMap[eventProp].capture});
 		}
 	});
 
