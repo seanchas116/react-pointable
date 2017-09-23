@@ -66,7 +66,7 @@ describe("component", () => {
 			"props": {},
 			"children": null
 		});
-		expect(addEventListener).toHaveBeenCalledWith("pointermove", onPointerMove, false);
+		expect(addEventListener).toHaveBeenCalledWith("pointermove", onPointerMove, {capture: false});
 		expect(setAttribute).toHaveBeenCalledWith('touch-action', 'auto');
 	});
 
@@ -104,7 +104,7 @@ describe("component", () => {
 				<Pointable {...pointableProps}></Pointable>,
 				rendererOptions
 			);
-			expect(addEventListener).toHaveBeenCalledWith(domEventName, handler, false);
+			expect(addEventListener).toHaveBeenCalledWith(domEventName, handler, {capture: false});
 		});
 	});
 
@@ -126,7 +126,7 @@ describe("component", () => {
 				<Pointable {...pointableProps}></Pointable>,
 				rendererOptions
 			);
-			expect(addEventListener).toHaveBeenCalledWith(domEventName, handler, true);
+			expect(addEventListener).toHaveBeenCalledWith(domEventName, handler, {capture: true});
 		});
 	});
 });

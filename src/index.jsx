@@ -119,7 +119,7 @@ const initNodeWithPE = (node, props) => {
 		const listener = props[eventProp];
 		if (listener) {
 			hasPE = true;
-			node.addEventListener(pointerEventMap[eventProp], listener, eventProp.endsWith('Capture'));
+			node.addEventListener(pointerEventMap[eventProp], listener, {capture: eventProp.endsWith('Capture')});
 		}
 	});
 
@@ -148,16 +148,16 @@ const updateNodeWithPE = (node, prevProps, nextProps) => {
 		// Note the additional check exists because `undefined` !== `null` but both mean "no event listener".
 		if (listenerOld === listenerNew || !listenerOld && !listenerNew) return;
 
-		const useCapture = eventProp.endsWith('Capture')
+		const capture = eventProp.endsWith('Capture')
 
 		// Remove existing event listener.
 		if (listenerOld) {
-			node.removeEventListener(pointerEventMap[eventProp], listenerOld, useCapture);
+			node.removeEventListener(pointerEventMap[eventProp], listenerOld, {capture});
 		}
 
 		// Add/update with new event listener.
 		if (listenerNew) {
-			node.addEventListener(pointerEventMap[eventProp], listenerNew, useCapture);
+			node.addEventListener(pointerEventMap[eventProp], listenerNew, {capture});
 		}
 	});
 
