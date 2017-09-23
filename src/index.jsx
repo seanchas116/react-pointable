@@ -148,14 +148,16 @@ const updateNodeWithPE = (node, prevProps, nextProps) => {
 		// Note the additional check exists because `undefined` !== `null` but both mean "no event listener".
 		if (listenerOld === listenerNew || !listenerOld && !listenerNew) return;
 
+		const useCapture = eventProp.endsWith('Capture')
+
 		// Remove existing event listener.
 		if (listenerOld) {
-			node.removeEventListener(pointerEventMap[eventProp], listenerOld);
+			node.removeEventListener(pointerEventMap[eventProp], listenerOld, useCapture);
 		}
 
 		// Add/update with new event listener.
 		if (listenerNew) {
-			node.addEventListener(pointerEventMap[eventProp], listenerNew, eventProp.endsWith('Capture'));
+			node.addEventListener(pointerEventMap[eventProp], listenerNew, useCapture);
 		}
 	});
 
